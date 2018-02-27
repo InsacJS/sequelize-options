@@ -1,5 +1,5 @@
 {
-  "name": "insac-options",
+  "name": "sequelize-options",
   "version": "1.0.0",
   "description": "Facilita la creación del objeto options que utiliza Sequelize para realizar consultas a la base de datos.",
   "main": "index.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/waquispe/insac-options.git"
+    "url": "git+https://github.com/waquispe/sequelize-options.git"
   },
   "keywords": [
     "insac",
@@ -21,9 +21,9 @@
   "author": "Wilmer Alex Quispe Quispe <q.wilmer.alex@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/waquispe/insac-options/issues"
+    "url": "https://github.com/waquispe/sequelize-options/issues"
   },
-  "homepage": "https://github.com/waquispe/insac-options#readme",
+  "homepage": "https://github.com/waquispe/sequelize-options#readme",
   "devDependencies": {
     "chai": "^4.1.2",
     "esdoc": "^1.0.4",

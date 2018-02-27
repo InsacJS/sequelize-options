@@ -12,9 +12,9 @@
         "coverage": { "enable": true },
         "typeInference": { "enable": true },
         "brand": {
-          "title": "Insac Options",
+          "title": "Sequelize Options",
           "description": "Facilita la creación del objeto options que utiliza Sequelize para realizar consultas a la base de datos.",
-          "repository": "https://github.com/waquispe/insac-options"
+          "repository": "https://github.com/waquispe/sequelize-options"
         }
       }
     }

@@ -1,4 +1,4 @@
-# Insac Options
+# Sequelize Options
 
 Facilita la creación del objeto options que utiliza Sequelize para realizar consultas a la base de datos.
 
@@ -73,62 +73,65 @@ Devuelve una lista ordenada de forma ascendente `field` o descendente `-field`.
 Puede representar a un simple objeto o una lista de objetos:
 ``` js
 const output = { // Objeto
-  id: FIELD,
-  titulo: FIELD,
-  precio: FIELD
+  id     : FIELD,
+  titulo : FIELD,
+  precio : FIELD
 }
 const output = [{ // Lista de objetos
-  id: FIELD,
-  titulo: FIELD,
-  precio: FIELD
+  id     : FIELD,
+  titulo : FIELD,
+  precio : FIELD
 }]
 ```
 Puede incluir objetos anidados (asociaciones de los modelos):
 ``` js
 const output = [{
-  id: FIELD,
-  titulo: FIELD,
-  precio: FIELD,
-  autor: {
-    id: FIELD,
-    nombre: FIELD,
-    usuario: {
-      id: FIELD,
-      username: FIELD,
-      password: FIELD,
-      roles: [{
-        id: FIELD,
-        nombre: FIELD
+  id     : FIELD,
+  titulo : FIELD,
+  precio : FIELD,
+  autor  : {
+    id      : FIELD,
+    nombre  : FIELD,
+    usuario : {
+      id       : FIELD,
+      username : FIELD,
+      password : FIELD,
+      roles    : [{
+        id     : FIELD,
+        nombre : FIELD
       }]
     }
   }
 }]
 ```
 
+**Nota.-** Para crear un objeto de tipo `output`, puede utilizar la librería  [field-creator](https://github.com/waquispe/field-creator).
+
 # Instalación
 
 Para instalar sobre un proyecto, ejecutar el siguiente comando:
 
-$ `sudo npm install --save insac-options`
+$ `sudo npm install --save sequelize-options`
 
 # Ejemplos
+
 ## Ejemplo 1. Construir el output.
 
 Objeto de entrada (query) y un modelo de salida (output).
 ``` js
-const { Options } = require('insac-options')
+const { Options } = require('sequelize-options')
 
 const AUTOR = sequelize.define('autor', {
-  id_autor: { type: Sequelize.INTEGER(), primaryKey: true },
-  nombre: Sequelize.STRING(),
-  ci: Sequelize.INTEGER(),
-  telefono: Sequelize.INTEGER()
+  id_autor : { type: Sequelize.INTEGER(), primaryKey: true },
+  nombre   : Sequelize.STRING(),
+  ci       : Sequelize.INTEGER(),
+  telefono : Sequelize.INTEGER()
 })
 
 const LIBRO = sequelize.define('libro', {
-  id_libro: { type: Sequelize.INTEGER(), primaryKey: true },
-  titulo: Sequelize.STRING(),
-  precio: Sequelize.FLOAT()
+  id_libro : { type: Sequelize.INTEGER(), primaryKey: true },
+  titulo   : Sequelize.STRING(),
+  precio   : Sequelize.FLOAT()
 })
 
 AUTOR.hasMany(LIBRO, { as: 'libros', foreignKey: { name: 'fid_autor' } })
@@ -140,12 +143,12 @@ const QUERY = {
 }
 
 const OUTPUT = [{
-  id_libro: LIBRO.attributes.id_libro,
-  titulo: LIBRO.attributes.titulo,
-  precio: LIBRO.attributes.precio,
-  autor: {
-    id_autor: AUTOR.attributes.id_autor
-    nombre: AUTOR.attributes.nombre
+  id_libro : LIBRO.attributes.id_libro,
+  titulo   : LIBRO.attributes.titulo,
+  precio   : LIBRO.attributes.precio,
+  autor    : {
+    id_autor : AUTOR.attributes.id_autor
+    nombre   : AUTOR.attributes.nombre
   }
 }]
 
@@ -181,25 +184,25 @@ Puede filtrar los campos de un objeto.
 ``` js
 const DATA = [
   {
-    id_libro: 1,
-    titulo: 'El gato negro',
-    precio: 11.99,
-    autor: {
-      id_autor: 1,
-      nombre: 'Edgar Allan Poe',
-      ci: 64857683,
-      telefono: 78849484
+    id_libro : 1,
+    titulo   : 'El gato negro',
+    precio   : 11.99,
+    autor    : {
+      id_autor : 1,
+      nombre   : 'Edgar Allan Poe',
+      ci       : 64857683,
+      telefono : 78849484
     }
   },
   {
-    id_libro: 2,
-    titulo: 'El cuervo',
-    precio: 15.99,
-    autor: {
-      id_autor: 2,
-      nombre: 'Edgar Allan Poe',
-      ci: 64857683,
-      telefono: 78849484
+    id_libro : 2,
+    titulo   : 'El cuervo',
+    precio   : 15.99,
+    autor    : {
+      id_autor : 2,
+      nombre   : 'Edgar Allan Poe',
+      ci       : 64857683,
+      telefono : 78849484
     }
   }
 ]

@@ -4,13 +4,13 @@ const path = require('path')
 const Sequelize = require('sequelize')
 
 const PARAMS = {
-  dialect: 'postgres',
-  lang: 'es',
-  logging: false,
-  define: {
-    underscored: true,
-    freezeTableName: true,
-    timestamps: false
+  dialect : 'postgres',
+  lang    : 'es',
+  logging : false,
+  define  : {
+    underscored     : true,
+    freezeTableName : true,
+    timestamps      : false
   },
   operatorsAliases: false
 }
@@ -29,17 +29,17 @@ describe('\n - Clase: Options\n', () => {
       const LIBRO = sequelize.models.libro
 
       const QUERY = {
-        fields: 'titulo,precio,autor(nombre,ci,telefono)',
-        order: '-autor.nombre'
+        fields : 'titulo,precio,autor(nombre,ci,telefono)',
+        order  : '-autor.nombre'
       }
 
       const OUTPUT = [{
-        id_libro: LIBRO.attributes.id_libro,
-        titulo: LIBRO.attributes.titulo,
-        precio: LIBRO.attributes.precio,
-        autor: {
-          id_autor: AUTOR.attributes.id_autor,
-          nombre: AUTOR.attributes.nombre
+        id_libro : LIBRO.attributes.id_libro,
+        titulo   : LIBRO.attributes.titulo,
+        precio   : LIBRO.attributes.precio,
+        autor    : {
+          id_autor : AUTOR.attributes.id_autor,
+          nombre   : AUTOR.attributes.nombre
         }
       }]
 
@@ -86,55 +86,55 @@ describe('\n - Clase: Options\n', () => {
     it('Ejecución con parámetros', () => {
       const sequelize = new Sequelize(null, null, null, PARAMS)
       const AUTOR = sequelize.define('autor', {
-        id_autor: { type: Sequelize.INTEGER(), primaryKey: true },
-        nombre: Sequelize.STRING(),
-        ci: Sequelize.INTEGER(),
-        telefono: Sequelize.INTEGER()
+        id_autor : { type: Sequelize.INTEGER(), primaryKey: true },
+        nombre   : Sequelize.STRING(),
+        ci       : Sequelize.INTEGER(),
+        telefono : Sequelize.INTEGER()
       })
       const LIBRO = sequelize.define('libro', {
-        id_libro: { type: Sequelize.INTEGER(), primaryKey: true },
-        titulo: Sequelize.STRING(),
-        precio: Sequelize.FLOAT()
+        id_libro : { type: Sequelize.INTEGER(), primaryKey: true },
+        titulo   : Sequelize.STRING(),
+        precio   : Sequelize.FLOAT()
       })
       AUTOR.hasMany(LIBRO, { as: 'libros', foreignKey: { name: 'fid_autor' } })
       LIBRO.belongsTo(AUTOR, { as: 'autor', foreignKey: { name: 'fid_autor', targetKey: 'id_autor' } })
 
       const QUERY = {
-        fields: 'titulo,precio,autor(nombre,ci,telefono)',
-        order: '-autor.nombre'
+        fields : 'titulo,precio,autor(nombre,ci,telefono)',
+        order  : '-autor.nombre'
       }
 
       const OUTPUT = [{
-        id_libro: LIBRO.attributes.id_libro,
-        titulo: LIBRO.attributes.titulo,
-        precio: LIBRO.attributes.precio,
-        autor: {
-          id_autor: AUTOR.attributes.id_autor,
-          nombre: AUTOR.attributes.nombre
+        id_libro : LIBRO.attributes.id_libro,
+        titulo   : LIBRO.attributes.titulo,
+        precio   : LIBRO.attributes.precio,
+        autor    : {
+          id_autor : AUTOR.attributes.id_autor,
+          nombre   : AUTOR.attributes.nombre
         }
       }]
 
       const DATA = [
         {
-          id_libro: 1,
-          titulo: 'El gato negro',
-          precio: 11.99,
-          autor: {
-            id_autor: 1,
-            nombre: 'Edgar Allan Poe',
-            ci: 64857683,
-            telefono: 78849484
+          id_libro : 1,
+          titulo   : 'El gato negro',
+          precio   : 11.99,
+          autor    : {
+            id_autor : 1,
+            nombre   : 'Edgar Allan Poe',
+            ci       : 64857683,
+            telefono : 78849484
           }
         },
         {
-          id_libro: 2,
-          titulo: 'El cuervo',
-          precio: 15.99,
-          autor: {
-            id_autor: 2,
-            nombre: 'Edgar Allan Poe',
-            ci: 64857683,
-            telefono: 78849484
+          id_libro : 2,
+          titulo   : 'El cuervo',
+          precio   : 15.99,
+          autor    : {
+            id_autor : 2,
+            nombre   : 'Edgar Allan Poe',
+            ci       : 64857683,
+            telefono : 78849484
           }
         }
       ]

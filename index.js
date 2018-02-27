@@ -1,1 +1,1 @@
-module.exports = require('./lib/insac-options')
+module.exports = require('./lib/sequelize-options')
