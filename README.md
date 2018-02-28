@@ -70,7 +70,7 @@ Devuelve una lista ordenada de forma ascendente `field` o descendente `-field`.
 
 ## Formato de la propiedad `output`.
 
-Puede representar a un simple objeto o una lista de objetos:
+Puede representar a un simple objeto o una lista de objetos (fieldGroup):
 ``` js
 const output = { // Objeto
   id     : FIELD,
@@ -105,13 +105,13 @@ const output = [{
 }]
 ```
 
-**Nota.-** Para crear un objeto de tipo `output`, puede utilizar la librería  [field-creator](https://github.com/waquispe/field-creator).
+**Nota.-** Para crear un objeto de tipo `output`, se recomienta utilizar la librería  [field-creator](https://github.com/waquispe/field-creator).
 
 # Instalación
 
 Para instalar sobre un proyecto, ejecutar el siguiente comando:
 
-$ `sudo npm install --save sequelize-options`
+$ `npm install --save sequelize-options`
 
 # Ejemplos
 
@@ -227,7 +227,7 @@ console.log(JSON.stringify(result, null, 2))
 // ]
 ```
 
-También podemos incluir los atributos de los submodelos dentro del objeto raiz.
+También podemos desplazar los atributos de los submodelos dentro del objeto raiz.
 ``` js
 const resultPlain = Options.filter(DATA, { query: QUERY, output: OUTPUT, plain: true })
 console.log(JSON.stringify(resultPlain, null, 2))

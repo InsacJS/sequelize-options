@@ -1,6 +1,6 @@
 /* global describe it expect */
-const Options = require('../../lib/class/Options')
-const path = require('path')
+const Options   = require('../../lib/class/Options')
+const path      = require('path')
 const Sequelize = require('sequelize')
 
 const PARAMS = {

@@ -14,6 +14,7 @@
   },
   "keywords": [
     "insac",
+    "sequelize",
     "options",
     "web",
     "service"
