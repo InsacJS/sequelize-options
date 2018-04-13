@@ -15,9 +15,9 @@ Adicionalmente, puede filtrar los datos de un resultado.
 
 | Filtro    | Descripción                                     | Valor por defecto |
 |-----------|-------------------------------------------------|-------------------|
-| `fields`  | Campos que serán devueltos en el resultado.     | `all`             |
+| `fields`  | Campos que serán devueltos en el resultado.     | `ALL`             |
 | `limit`   | Cantidad de registros por página.               | `50`              |
-| `page`    | Número de página.                               | `0`               |
+| `page`    | Número de página.                               | `1`               |
 | `order`   | Ordena el resultado (`field`, `-field`)         | `<ninguno>`       |
 | `<field>` | Consulta simple (`field=valor`)                 | `<ninguno>`       |
 
