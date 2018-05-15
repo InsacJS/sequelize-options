@@ -1,27 +1,55 @@
 # Sequelize Options
 
-Facilita la creación del objeto options que utiliza Sequelize para realizar consultas a la base de datos.
+Sequelize es un potente Framework ORM de NodeJS, utilizado para realizar consultas y operaciones con la base de datos. Estas consultas se crean definiendo un objeto que contiene todos los parámetros de la consulta.
 
-Adicionalmente, puede filtrar los datos de un resultado.
+Esta librería se encarga de construir el objeto `options` que utiliza sequelize para realizar consultas, a partir de un objeto `query` que incluye algunos filtros básicos y la instancia de un modelo Sequelize `model` para tomar en cuenta solamente los atributos definidos dentro del modelo.
 
-# Características
+Aprovechando que se utiliza Sequelize para definir los modelos, también es posible filtrar un resultado, utilizando un objeto de tipo `FieldGroup`.
 
-1. Se puede crear a partir de la query que se envía desde la URL. [`query`]
-2. Puede incluir todos los atributos de un modelo Sequelize. [`model`]
-3. Puede utilizar un objeto que contenga atributos Sequelize. [`output`]
-4. Puede incluir todos los campos que sean llaves primarias y foráneas. [`key`]
+## Características
 
-## Formato de la propiedad `query`
+- Es posible crear este objeto utilizando la query que se envía en la URL de una petición.
+- Es posible forzar a que los atributos sean parte de un modelo Sequelize.
+- Es posible indicar que se inlcuya de manera obligatoria todas las claves primarias y foráneas.
+- Se puede filtrar un resultado, utilizando como base un objeto de tipo `FieldGroup`.
 
-| Filtro    | Descripción                                     | Valor por defecto |
-|-----------|-------------------------------------------------|-------------------|
-| `fields`  | Campos que serán devueltos en el resultado.     | `ALL`             |
-| `limit`   | Cantidad de registros por página.               | `50`              |
-| `page`    | Número de página.                               | `1`               |
-| `order`   | Ordena el resultado (`field`, `-field`)         | `<ninguno>`       |
-| `<field>` | Consulta simple (`field=valor`)                 | `<ninguno>`       |
+## Función `create`
 
-### Modo de uso del filtro `fields`
+| Parámetro              | Descripción |
+|------------------------|-------------|
+| `options`              | Opciones de consulta. |
+| `options.query`        | Objeto que contiene los filtros de la consulta. |
+| `options.query.fields` | Cadena de texto que contiene los atributos. |
+| `options.query.limit`  | Cantidad de registros a devolver. |
+| `options.query.offset` | Posicion desde la que se devuelven los registros. |
+| `options.query.order`  | Nombre del atributo de ordenación. |
+| `options.query.col`    | Nombre del atributo que se utilizará para identificar registros distintos. |
+| `options.query.distinct` | Indica si se devolverá solamente los registros que sean distintos tomando como base el atributo `query.col`. |
+| `options.output`       | Objeto de tipo `FieldGroup` que contiene los atributos. |
+| `options.model`        | Instancia de un modelo Sequelize. |
+| `options.keys`         | Indica si se incluirán las claves primarias y foráneas. |
+| `options.plain`        | Indica si se devolverá un objeto plano. |
+
+Para crear el objeto `options.output`, se recomienda utilizar la librería [field-creator](https://github.com/waquispe/field-creator).
+
+## Función `filter`
+
+| Parámetro   | Descripción |
+|-------------|-------------|
+| `data`      | Objeto o lista de objetos cuyas propieades serán filtradas. |
+| `options`   | Opciones de consulta. |
+
+## Propiedad `options.query`
+
+| Filtro    | Descripción                                       | Valor por defecto |
+|-----------|---------------------------------------------------|-------------------|
+| `fields`  | Campos que serán devueltos en el resultado.       | `ALL`             |
+| `limit`   | Cantidad de registros por página.                 | `50`              |
+| `offset`  | Posicion desde la que se devuelven los registros. | `0`               |
+| `order`   | Ordena el resultado (`field`, `-field`)           | `<ninguno>`       |
+| `<field>` | Consulta simple (`field=valor`)                   | `<ninguno>`       |
+
+## Filtro `fields`
 
 Todos los campos.
 - `/personas`
@@ -43,7 +71,9 @@ Incluyendo consultas. **[ required = false ]**
 - `/personas?fields=id,nombre=john`
 - `/personas?fields=id,usuario(roles(estado=ACTIVO))`
 
-### Modo de uso del filtro `<field>`
+Al incluir este tipo de filtros, si el objeto no cumple con la condición, el valor de este campo será `undefined`.
+
+## Filtro `<field>`
 
 Incluyendo consultas. **[ required = true ]**
 - `/personas?id=1`
@@ -52,15 +82,14 @@ Incluyendo consultas. **[ required = true ]**
 - `/personas?usuario.username=admin`
 - `/personas?usuario.roles.estado=ACTIVO`
 
-#### Nota.-
-Al incluir consultas sobre un objeto (`usuario(estado=ACTIVO)` o `usuario.estado=ACTIVO`), si el objeto no cumple con la condición, el valor de este campo será `undefined` y si la condición es requerida el registro al que pertenece el objeto no se incluirá en el resultado.
+Al incluir este tipo de filtros, si el objeto no cumple con la condición, el registro al que pertenece este campo no será incluido en el resultado.
 
-### Modo de uso de los filtros `limit` y `page`
+## Filtros `limit` y `offset`
 
 Devuelve una cierta cantidad de registros, indicando el número de página.
-- `/personas?limit=50&page=1`
+- `/personas?limit=50&offset=0`
 
-### Modo de uso del filtro `order`
+## Filtro `order`
 
 Devuelve una lista ordenada de forma ascendente `field` o descendente `-field`.
 - `/personas?order=id`
@@ -68,89 +97,51 @@ Devuelve una lista ordenada de forma ascendente `field` o descendente `-field`.
 - `/personas?order=nombre,paterno,materno`
 - `/personas?order=-_fecha_creacion,-_fecha_modificacion`
 
-## Formato de la propiedad `output`.
-
-Puede representar a un simple objeto o una lista de objetos (fieldGroup):
-``` js
-const output = { // Objeto
-  id     : FIELD,
-  titulo : FIELD,
-  precio : FIELD
-}
-const output = [{ // Lista de objetos
-  id     : FIELD,
-  titulo : FIELD,
-  precio : FIELD
-}]
-```
-Puede incluir objetos anidados (asociaciones de los modelos):
-``` js
-const output = [{
-  id     : FIELD,
-  titulo : FIELD,
-  precio : FIELD,
-  autor  : {
-    id      : FIELD,
-    nombre  : FIELD,
-    usuario : {
-      id       : FIELD,
-      username : FIELD,
-      password : FIELD,
-      roles    : [{
-        id     : FIELD,
-        nombre : FIELD
-      }]
-    }
-  }
-}]
-```
-
-**Nota.-** Para crear un objeto de tipo `output`, se recomienta utilizar la librería  [field-creator](https://github.com/waquispe/field-creator).
-
-# Instalación
+## Instalación
 
 Para instalar sobre un proyecto, ejecutar el siguiente comando:
 
 $ `npm install --save sequelize-options`
-
-# Ejemplos
 
 ## Ejemplo 1. Construir el output.
 
 Objeto de entrada (query) y un modelo de salida (output).
 ``` js
 const { Options } = require('sequelize-options')
+const { Field, THIS } = require('field-creator')
 
 const AUTOR = sequelize.define('autor', {
-  id_autor : { type: Sequelize.INTEGER(), primaryKey: true },
-  nombre   : Sequelize.STRING(),
-  ci       : Sequelize.INTEGER(),
-  telefono : Sequelize.INTEGER()
+  id_autor : Field.ID(),
+  nombre   : Field.STRING(),
+  ci       : Field.INTEGER(),
+  telefono : Field.INTEGER()
 })
 
 const LIBRO = sequelize.define('libro', {
-  id_libro : { type: Sequelize.INTEGER(), primaryKey: true },
-  titulo   : Sequelize.STRING(),
-  precio   : Sequelize.FLOAT()
+  id_libro : Field.ID(),
+  titulo   : Field.STRING(),
+  precio   : Field.FLOAT()
 })
 
 AUTOR.hasMany(LIBRO, { as: 'libros', foreignKey: { name: 'fid_autor' } })
 LIBRO.belongsTo(AUTOR, { as: 'autor', foreignKey: { name: 'fid_autor', targetKey: 'id_autor' } })
 
 const QUERY = {
-  fields: 'titulo,precio,autor(nombre,ci,telefono)',
-  order: '-autor.nombre'
+  fields : 'titulo,precio,autor(nombre,ci,telefono)',
+  order  : '-autor.nombre',
+  limit  : 50,
+  offset : 0
 }
 
-const OUTPUT = [{
-  id_libro : LIBRO.attributes.id_libro,
-  titulo   : LIBRO.attributes.titulo,
-  precio   : LIBRO.attributes.precio,
+const OUTPUT = Field.group(LIBRO, [{
+  id_libro : THIS(),
+  titulo   : THIS(),
+  precio   : THIS(),
   autor    : {
-    id_autor : AUTOR.attributes.id_autor
-    nombre   : AUTOR.attributes.nombre
+    id_autor : THIS(),
+    nombre   : THIS()
   }
-}]
+}])
 
 const options = Options.create({ query: QUERY, output: OUTPUT })
 console.log(JSON.stringify(options, null, 2))

@@ -1,8 +1,10 @@
+const { Field } = require('field-creator')
+
 module.exports = (sequelize, Sequelize) => {
   const MODEL = sequelize.define('libro', {
-    id_libro : { type: Sequelize.INTEGER(), primaryKey: true },
-    titulo   : Sequelize.STRING(),
-    precio   : Sequelize.FLOAT()
+    id_libro : Field.ID(),
+    titulo   : Field.STRING(),
+    precio   : Field.FLOAT()
   })
 
   MODEL.associate = (models) => {

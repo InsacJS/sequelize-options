@@ -2,6 +2,7 @@
 const Options   = require('../../lib/class/Options')
 const path      = require('path')
 const Sequelize = require('sequelize')
+const { Field, THIS } = require('field-creator')
 
 const PARAMS = {
   dialect : 'postgres',
@@ -25,23 +26,24 @@ describe('\n - Clase: Options\n', () => {
       sequelize.models.autor.associate(sequelize.models)
       sequelize.models.libro.associate(sequelize.models)
 
-      const AUTOR = sequelize.models.autor
       const LIBRO = sequelize.models.libro
 
       const QUERY = {
         fields : 'titulo,precio,autor(nombre,ci,telefono)',
-        order  : '-autor.nombre'
+        order  : '-autor.nombre',
+        limit  : 50,
+        offset : 0
       }
 
-      const OUTPUT = [{
-        id_libro : LIBRO.attributes.id_libro,
-        titulo   : LIBRO.attributes.titulo,
-        precio   : LIBRO.attributes.precio,
+      const OUTPUT = Field.group(LIBRO, [{
+        id_libro : THIS(),
+        titulo   : THIS(),
+        precio   : THIS(),
         autor    : {
-          id_autor : AUTOR.attributes.id_autor,
-          nombre   : AUTOR.attributes.nombre
+          id_autor : THIS(),
+          nombre   : THIS()
         }
-      }]
+      }])
 
       const options = Options.create({ query: QUERY, output: OUTPUT })
       expect(options).to.have.property('attributes').to.be.an('array').to.have.lengthOf(2)
@@ -71,6 +73,8 @@ describe('\n - Clase: Options\n', () => {
       //       "association": "autor"
       //     }
       //   ],
+      //   "limit": 50,
+      //   "offset": 0,
       //   "order": [
       //     [
       //       "autor",
@@ -86,33 +90,37 @@ describe('\n - Clase: Options\n', () => {
     it('Ejecución con parámetros', () => {
       const sequelize = new Sequelize(null, null, null, PARAMS)
       const AUTOR = sequelize.define('autor', {
-        id_autor : { type: Sequelize.INTEGER(), primaryKey: true },
-        nombre   : Sequelize.STRING(),
-        ci       : Sequelize.INTEGER(),
-        telefono : Sequelize.INTEGER()
+        id_autor : Field.ID(),
+        nombre   : Field.STRING(),
+        ci       : Field.INTEGER(),
+        telefono : Field.INTEGER()
       })
+
       const LIBRO = sequelize.define('libro', {
-        id_libro : { type: Sequelize.INTEGER(), primaryKey: true },
-        titulo   : Sequelize.STRING(),
-        precio   : Sequelize.FLOAT()
+        id_libro : Field.ID(),
+        titulo   : Field.STRING(),
+        precio   : Field.FLOAT()
       })
+
       AUTOR.hasMany(LIBRO, { as: 'libros', foreignKey: { name: 'fid_autor' } })
       LIBRO.belongsTo(AUTOR, { as: 'autor', foreignKey: { name: 'fid_autor', targetKey: 'id_autor' } })
 
       const QUERY = {
         fields : 'titulo,precio,autor(nombre,ci,telefono)',
-        order  : '-autor.nombre'
+        order  : '-autor.nombre',
+        limit  : 50,
+        offset : 0
       }
 
-      const OUTPUT = [{
-        id_libro : LIBRO.attributes.id_libro,
-        titulo   : LIBRO.attributes.titulo,
-        precio   : LIBRO.attributes.precio,
+      const OUTPUT = Field.group(LIBRO, [{
+        id_libro : THIS(),
+        titulo   : THIS(),
+        precio   : THIS(),
         autor    : {
-          id_autor : AUTOR.attributes.id_autor,
-          nombre   : AUTOR.attributes.nombre
+          id_autor : THIS(),
+          nombre   : THIS()
         }
-      }]
+      }])
 
       const DATA = [
         {
