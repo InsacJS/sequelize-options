@@ -20,8 +20,8 @@ Aprovechando que se utiliza Sequelize para definir los modelos, también es posi
 | `options`              | Opciones de consulta. |
 | `options.query`        | Objeto que contiene los filtros de la consulta. |
 | `options.query.fields` | Cadena de texto que contiene los atributos. |
-| `options.query.limit`  | Cantidad de registros a devolver. |
-| `options.query.offset` | Posicion desde la que se devuelven los registros. |
+| `options.query.limit`  | Cantidad de registros a devolver por página. |
+| `options.query.page`   | Número de página. |
 | `options.query.order`  | Nombre del atributo de ordenación. |
 | `options.query.col`    | Nombre del atributo que se utilizará para identificar registros distintos. |
 | `options.query.distinct` | Indica si se devolverá solamente los registros que sean distintos tomando como base el atributo `query.col`. |
@@ -45,7 +45,7 @@ Para crear el objeto `options.output`, se recomienda utilizar la librería [fiel
 |-----------|---------------------------------------------------|-------------------|
 | `fields`  | Campos que serán devueltos en el resultado.       | `ALL`             |
 | `limit`   | Cantidad de registros por página.                 | `50`              |
-| `offset`  | Posicion desde la que se devuelven los registros. | `0`               |
+| `page`    | Número de página.                                 | `1`               |
 | `order`   | Ordena el resultado (`field`, `-field`)           | `<ninguno>`       |
 | `<field>` | Consulta simple (`field=valor`)                   | `<ninguno>`       |
 
@@ -84,10 +84,10 @@ Incluyendo consultas. **[ required = true ]**
 
 Al incluir este tipo de filtros, si el objeto no cumple con la condición, el registro al que pertenece este campo no será incluido en el resultado.
 
-## Filtros `limit` y `offset`
+## Filtros `limit` y `page`
 
 Devuelve una cierta cantidad de registros, indicando el número de página.
-- `/personas?limit=50&offset=0`
+- `/personas?limit=50&page=1`
 
 ## Filtro `order`
 
@@ -130,7 +130,7 @@ const QUERY = {
   fields : 'titulo,precio,autor(nombre,ci,telefono)',
   order  : '-autor.nombre',
   limit  : 50,
-  offset : 0
+  page   : 1
 }
 
 const OUTPUT = Field.group(LIBRO, [{
@@ -158,6 +158,8 @@ console.log(JSON.stringify(options, null, 2))
 //       "association": "autor"
 //     }
 //   ],
+//   "limit": 50,
+//   "offset": 0,
 //   "order": [
 //     [
 //       "autor",
