@@ -30,7 +30,7 @@ Aprovechando que se utiliza Sequelize para definir los modelos, también es posi
 | `options.keys`         | Indica si se incluirán las claves primarias y foráneas. |
 | `options.plain`        | Indica si se devolverá un objeto plano. |
 
-Para crear el objeto `options.output`, se recomienda utilizar la librería [field-creator](https://github.com/waquispe/field-creator).
+Para crear el objeto `options.output`, se recomienda utilizar la librería [field-creator](https://github.com/insacjs/field-creator).
 
 ## Función `filter`
 

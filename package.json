@@ -10,10 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/waquispe/sequelize-options.git"
+    "url": "git+https://github.com/insacjs/sequelize-options.git"
   },
   "keywords": [
     "insac",
+    "insacjs",
     "sequelize",
     "options",
     "web",
@@ -22,9 +23,9 @@
   "author": "Wilmer Alex Quispe Quispe <q.wilmer.alex@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/waquispe/sequelize-options/issues"
+    "url": "https://github.com/insacjs/sequelize-options/issues"
   },
-  "homepage": "https://github.com/waquispe/sequelize-options#readme",
+  "homepage": "https://github.com/insacjs/sequelize-options#readme",
   "devDependencies": {
     "chai": "^4.1.2",
     "esdoc": "^1.0.4",
