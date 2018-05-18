@@ -1,6 +1,6 @@
 {
   "name": "sequelize-options",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Facilita la creación del objeto options que utiliza Sequelize para realizar consultas a la base de datos.",
   "main": "index.js",
   "scripts": {
